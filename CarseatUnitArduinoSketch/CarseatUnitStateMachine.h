@@ -1,5 +1,6 @@
 #include "Arduino.h"
 #include "TimerOneMulti.h"
+#include <SoftwareSerial.h>
 
 /*
  This class represents a state machine for the Pressure sensing unit in the carseat.
@@ -23,8 +24,8 @@
 #define SEAT_SENSOR  2
 #define LED1         13  //Not sure if we need an LED in production, but it helps for debugging
 #define LED2         12
-#define TX           1
-#define RX           0
+#define TX           5
+#define RX           6
 
 //Timeout values
 #define SEATUP_WAIT_TIMEOUT 1000000
@@ -47,6 +48,7 @@ public:
 private:
   static CarseatUnitStateMachine* singleton;
   TimerOneMulti* timerController;
+  SoftwareSerial* serialPort;
   
   void seatDown();
   void seatUp();
@@ -56,6 +58,7 @@ private:
   
 public:
   static CarseatUnitStateMachine* getStateMachine();
+  SoftwareSerial* getSerialPort();
   
   void recieveMessage(char* message, int count);
   

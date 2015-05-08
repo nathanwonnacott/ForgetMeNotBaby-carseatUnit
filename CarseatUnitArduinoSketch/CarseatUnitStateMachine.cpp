@@ -14,6 +14,13 @@ CarseatUnitStateMachine::CarseatUnitStateMachine()
   state = INACTIVE;
   seatUpWaitTimer = NULL;
   pulseTimer = NULL;
+  serialPort = new SoftwareSerial(RX, TX);
+  serialPort->begin(9600);
+}
+
+SoftwareSerial* CarseatUnitStateMachine::getSerialPort()
+{
+  return serialPort;
 }
 
 CarseatUnitStateMachine* CarseatUnitStateMachine::getStateMachine()
@@ -69,7 +76,7 @@ void CarseatUnitStateMachine::seatUpWaitTimerExpired()
 
 void CarseatUnitStateMachine::heartbeatPulse()
 {
-  Serial.println("FMNB:SeatDown");  
+  serialPort->println("FMNB:SeatDown");
 }
 
 void CarseatUnitStateMachine::seatStatusChange(int val)

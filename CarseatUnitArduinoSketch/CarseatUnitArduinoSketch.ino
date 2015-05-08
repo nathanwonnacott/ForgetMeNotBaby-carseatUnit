@@ -2,12 +2,14 @@
 #include "TimerOneMulti.h"
 #include <avr/sleep.h>
 #include <avr/power.h>
+#include <SoftwareSerial.h>
 
 
 #include "CarseatUnitStateMachine.h"
 
 CarseatUnitStateMachine* stateMachine;
 TimerOneMulti* timerController;
+
 
 
 void sleep()
@@ -39,9 +41,12 @@ void setup() {
   pinMode(LED1,OUTPUT);
   pinMode(LED2,OUTPUT);
   pinMode(SEAT_SENSOR, INPUT);
+  pinMode(TX,OUTPUT);
   
+  digitalWrite(TX,LOW);
   digitalWrite(LED1, LOW);
   digitalWrite(LED2, LOW);
+  
   
   //Set up serial
   
