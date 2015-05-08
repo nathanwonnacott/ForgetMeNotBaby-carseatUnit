@@ -67,11 +67,13 @@ void CarseatUnitStateMachine::seatUp()
 
 void CarseatUnitStateMachine::seatUpWaitTimerExpired()
 {
-  state = INACTIVE; //TODO, should be some state that informs key fobs of seat up
+  state = INACTIVE;
   digitalWrite(LED1,LOW);
 
   timerController->cancelEvent(pulseTimer);
   pulseTimer = NULL;
+  
+  serialPort->println("FMNB:SeatUp");
 }
 
 void CarseatUnitStateMachine::heartbeatPulse()
