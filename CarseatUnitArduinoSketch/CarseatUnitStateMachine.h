@@ -12,6 +12,7 @@
  
   
 #define ID 0x1234
+#define MESSAGE_BUFFER_SIZE 100
 
 //ISR flag values
 #define SEAT_SENSOR_CHANGE_ISR_FLAG  0b10000000
@@ -60,7 +61,9 @@ public:
   static CarseatUnitStateMachine* getStateMachine();
   SoftwareSerial* getSerialPort();
   
-  void recieveMessage(char* message, int count);
+  void receiveMessage(char* message, int count);
+  
+  void receivedReconnect();
   
   void seatStatusChange(int val);
   

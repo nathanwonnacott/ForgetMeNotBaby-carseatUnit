@@ -10,7 +10,7 @@
 CarseatUnitStateMachine* stateMachine;
 TimerOneMulti* timerController;
 
-
+char serialReceiveBuffer[MESSAGE_BUFFER_SIZE];
 
 void sleep()
 {
@@ -102,6 +102,12 @@ void loop()
   {
     stateMachine->heartbeatPulse();
   }
+  while(stateMachine->getSerialPort()->available())
+  {
+    byte bytesRead = stateMachine->getSerialPort()->readBytesUntil('\n',serialReceiveBuffer,MESSAGE_BUFFER_SIZE);
+    stateMachine->receiveMessage(serialReceiveBuffer,bytesRead);
+  }
+  
   digitalWrite(LED2,! digitalRead(LED2));
   
 }

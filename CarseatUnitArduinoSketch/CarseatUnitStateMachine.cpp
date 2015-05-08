@@ -18,6 +18,27 @@ CarseatUnitStateMachine::CarseatUnitStateMachine()
   serialPort->begin(9600);
 }
 
+void CarseatUnitStateMachine::receiveMessage(char* message, int count)
+{
+  
+  if ( count == strlen("FMNB:Reconnect\n") && strncmp(message,"FMNB:Reconnect\n",count) )
+  {
+    receivedReconnect();
+  }
+}
+
+void CarseatUnitStateMachine::receivedReconnect()
+{
+  if( state == INACTIVE)
+  {
+    serialPort->println("FMNB:SeatUp");
+  }
+  if( state == ACTIVE || state == SEAT_UP_WAIT)
+  {
+    serialPort->println("FMNB:SeatDown");
+  }
+}
+
 SoftwareSerial* CarseatUnitStateMachine::getSerialPort()
 {
   return serialPort;
@@ -29,11 +50,6 @@ CarseatUnitStateMachine* CarseatUnitStateMachine::getStateMachine()
     singleton = new CarseatUnitStateMachine();
   
   return singleton;
-}
-
-void CarseatUnitStateMachine::recieveMessage(char* message, int count)
-{
-  
 }
 
 void CarseatUnitStateMachine::seatDown()
