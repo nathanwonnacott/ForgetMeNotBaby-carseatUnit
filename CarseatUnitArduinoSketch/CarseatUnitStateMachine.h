@@ -28,7 +28,7 @@
 
 //Timeout values
 #define SEATUP_WAIT_TIMEOUT 1000000
-
+#define HEARTBEAT_PERIOD    1000000//MAX_PERIOD
 enum CarseatState
 {
   INACTIVE,
@@ -52,6 +52,7 @@ private:
   void seatUp();
   CarseatState state;
   TimerEvent* seatUpWaitTimer;
+  TimerEvent* pulseTimer;
   
 public:
   static CarseatUnitStateMachine* getStateMachine();
@@ -61,6 +62,8 @@ public:
   void seatStatusChange(int val);
   
   void seatUpWaitTimerExpired();
+  
+  void heartbeatPulse();
 
 private:  
   CarseatUnitStateMachine();

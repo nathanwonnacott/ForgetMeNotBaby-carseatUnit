@@ -93,6 +93,10 @@ void loop()
   {
     stateMachine->seatUpWaitTimerExpired();
   }
+  if (interruptFlagsCopy & TIMER_FLAG_HEARTBEAT)
+  {
+    stateMachine->heartbeatPulse();
+  }
   digitalWrite(LED2,! digitalRead(LED2));
   
 }

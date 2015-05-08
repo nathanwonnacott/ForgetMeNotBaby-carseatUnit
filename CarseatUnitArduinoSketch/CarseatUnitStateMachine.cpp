@@ -13,6 +13,7 @@ CarseatUnitStateMachine::CarseatUnitStateMachine()
   timerController = TimerOneMulti::getTimerController();
   state = INACTIVE;
   seatUpWaitTimer = NULL;
+  pulseTimer = NULL;
 }
 
 CarseatUnitStateMachine* CarseatUnitStateMachine::getStateMachine()
@@ -41,6 +42,13 @@ void CarseatUnitStateMachine::seatDown()
   
   digitalWrite(LED1,HIGH);
   state = ACTIVE;
+  
+  //Start heartbeat pulses if  not already started
+  if ( pulseTimer == NULL)
+  {
+    pulseTimer = timerController->addEvent(HEARTBEAT_PERIOD, timerISR, true, (void*) TIMER_FLAG_HEARTBEAT);
+  }
+  
 }
 void CarseatUnitStateMachine::seatUp()
 {
@@ -54,6 +62,14 @@ void CarseatUnitStateMachine::seatUpWaitTimerExpired()
 {
   state = INACTIVE; //TODO, should be some state that informs key fobs of seat up
   digitalWrite(LED1,LOW);
+
+  timerController->cancelEvent(pulseTimer);
+  pulseTimer = NULL;
+}
+
+void CarseatUnitStateMachine::heartbeatPulse()
+{
+  Serial.println("FMNB:SeatDown");  
 }
 
 void CarseatUnitStateMachine::seatStatusChange(int val)
